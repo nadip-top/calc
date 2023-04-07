@@ -1,0 +1,186 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>калькулятор</title>
+    <link rel="stylesheet" href="style1.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#n_x2').click(function () {//функция возведения числа в квадрат
+                try {
+                    $pow = eval('Math.pow(' + $('#itog2').val() + ',2)');
+                } catch {
+                    $('#itog2').attr('placeholder', 'ошибка!');
+                    return;
+                }
+                $('#itog2').val($pow);
+            });
+            $('#n_p').click(function () {//функция вычисления 1% от введенного числа
+                $itog = eval($('#itog2').val()) / 100;
+                if (isNaN($itog)) {
+                    $('#itog2').attr('placeholder', 'ошибка!');
+                    return;
+                }
+                $('#itog2').val($itog);
+            });
+            $('#n_V').click(function () {//функция вычисления корня из введенного числа
+                $sqrt = eval('Math.sqrt(' + $('#itog2').val() + ')');
+                if (isNaN($sqrt)) {
+                    $('#itog2').attr('placeholder', 'ошибка!');
+                    return;
+                }
+                $('#itog2').val($sqrt);
+            });
+
+            $('.number').click(function () {
+                $('#itog2').val($('#itog2').val() + $(this).val());
+            })//функция для вставки чисел в поле
+            $('.operation').click(function () {//функция вставки операций + - * / в текстовое поле
+                $x = $('#itog2').val().substr(-1);
+                $y = $('#itog2').val();
+                if ($x == '+' || $x == '-' || $x == '*' || $x == '/') {
+                    $y = $y.substr(0, $y.length - 1) + $(this).val();
+                    $('#itog2').val($y);
+                } else {
+                    $('#itog2').val($('#itog2').val() + $(this).val());
+                }
+                $x = $('#itog2').val().substr(0);
+                if ($x == '+' || $x == '*' || $x == '/' || $x == '.' || $x == 'V' || $x == 'x2' || $x == '%' || $x == '.') {
+                    $('#itog2').val('');
+                    $('#itog2').attr('placeholder', 'ошибка!');
+                    return;
+                }
+            });
+            $('#dot').click(function () {//функция для вставки точки в текстовое поле
+                ln = $('#itog2').val();
+                a = ln.substr(ln.length - 1, 1);
+                if (a == '.') {
+                    return;
+                } else {
+                    check = 0;
+                    for (var i = 0; i < ln.length; i++) {
+                        if (ln[i] == '/' || ln[i] == '*' || ln[i] == "+" || ln[i] == "-") {
+                            check = 1;
+                            operation = ln[i];
+                        }
+                    }
+                    if (check == 0) {
+                        for (var i = 0; i < ln.length; i++) {
+                            if (ln[i] == '.') {
+                                return;
+                            }
+                        }
+                    } else {
+                        arr = ln.split(operation);
+                        for (var i = 0; i < arr[arr.length - 1].length; i++) {
+                            if (arr[arr.length - 1][i] == '.') {
+                                return;
+                            }
+                        }
+                    }
+                    $('#itog2').val($('#itog2').val() + $('#dot').val());
+                }
+            });
+            $('#C').click(function () {
+                $('#itog2').val('');
+            });//функция полной очистки текстового поля
+            $('#C1').click(function () {//функция стирания последнего введенного символа в текстовое поле
+                $x = $('#itog2').val();
+                $x = $x.slice(0, -1);
+                $('#itog2').val($x);
+            });
+            $('#ravn').click(function () {//функция вычисления введенных данных в текстовое поле
+            	$pr = $('#itog2').val();
+                $x = $('#itog2').val().substr(-1);
+                if ($x == '+' || $x == '-' || $x == '*' || $x == '/' || $x == '.') {
+                    $('#itog2').val('');
+                    $('#itog2').attr('placeholder', 'ошибка!');
+                    return;
+                }
+                try {
+                    $itog = eval($('#itog2').val());
+                    $('#itog2').val($itog);
+                    $pr2 = $('#history').val();
+                    $('#history').val($pr2 + "\n" + $pr + '=' + $itog);
+                } catch {
+                    $('#itog2').val('');
+                    $('#itog2').attr('placeholder', 'ошибка!');
+                }
+            });
+            $('input').click(function () {
+                $('#itog2').attr('placeholder', '')
+            });
+            //очистка placeholder на случай если была допущена ошибка в предыдущих вычислениях
+            $('.cos').click(function () {
+                $cos = eval('Math.round(Math.cos(' + $('#itog2').val() + ' / 180 * Math.PI)*1000000)/1000000');
+                if (isNaN($cos)) {
+                    $('#itog2').attr('placeholder', 'ошибка!');
+                    return;
+                }
+                $('#itog2').val($cos);
+            });
+            $('.sin').click(function () {
+                $sin = eval('Math.round(Math.sin(' + $('#itog2').val() + ' / 180 * Math.PI)*1000000)/1000000');
+                if (isNaN($sin)) {
+                    $('#itog2').attr('placeholder', 'ошибка!');
+                    return;
+                }
+                $('#itog2').val($sin);
+            });
+            $('.tg').click(function () {
+                $tg = eval('Math.round(Math.tan(' + $('#itog2').val() + ' / 180 * Math.PI)*1000000)/1000000');
+                if (isNaN($tg)) {
+                    $('#itog2').attr('placeholder', 'ошибка!');
+                    return;
+                }
+                $('#itog2').val($tg);
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="calc">
+    <div class="main">
+<input class="input-var" id="itog2" type="text">
+<div class="row">
+<input class="calc-button" id="C" type="button" value="С">
+<input class="calc-button" id="C1" type="button" value="<-">
+<input class="operation calc-button" type="button" value="/">
+<input class="calc-button" id="n_p" type="button" value="%">
+<input class="calc-button" id="n_x2" type="button" value="²">
+</div>
+<div class="row">
+<input class="number calc-button" type="button" value="7">
+<input class="number calc-button" type="button" value="8">
+<input class="number calc-button" type="button" value="9">
+<input class="operation calc-button" type="button" value="*">
+<input class="cos calc-button" type="button" value="cos">
+</div>
+<div class="row">
+<input class="number calc-button" type="button" value="4">
+<input class="number calc-button" type="button" value="5">
+<input class="number calc-button" type="button" value="6">
+<input class="operation calc-button" type="button" value="-">
+<input class="sin calc-button" type="button" value="sin">
+</div>
+<div class="row">
+<input class="number calc-button" type="button" value="1">
+<input class="number calc-button" type="button" value="2">
+<input class="number calc-button" type="button" value="3">
+<input class="operation p calc-button" type="button" value="+">
+<input class="tg calc-button" type="button" value="tg">
+</div>
+<div class="row">
+<input class="calc-button" id="n_V" type="button" value="√">
+<input class="number calc-button" type="button" value="0">
+<input class="calc-button" id="dot" type="button" value=",">
+<input class="calc-button eq" id="ravn" type="button" value="=">
+</div>
+</div>
+<div class="history">
+	<textarea id="history" disabled="" class="his-a">История</textarea>
+	</div>
+    </div>
+</div>
+</body>
+</html>
